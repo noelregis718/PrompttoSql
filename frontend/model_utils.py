@@ -3,7 +3,7 @@ import torch
 import os
 
 # Load your model and tokenizer (do this once when the module is imported)
-model_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "fine_tuned_llama")
+model_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "fine_tuned_deepseek")
 
 model = AutoModelForCausalLM.from_pretrained(model_path)
 tokenizer = AutoTokenizer.from_pretrained(model_path)

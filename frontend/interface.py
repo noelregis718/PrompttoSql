@@ -1,4 +1,5 @@
-from model_utils import generate_sql
+# interface.py
+from model_utils import generate_sql, unload_model
 import streamlit as st
 
 st.title("SQL Query Generator")
@@ -23,5 +24,8 @@ if st.button("Generate SQL"):
                 st.write(explanation)
             else:
                 st.write(result)
+                
+            # Unload model to free memory
+            unload_model()
     else:
         st.error("Please provide both a query and database schema.")

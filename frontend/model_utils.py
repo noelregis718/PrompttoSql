@@ -1,14 +1,37 @@
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import torch
 import os
+import gc
 
-# Load your model and tokenizer (do this once when the module is imported)
-model_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "fine_tuned_deepseek")
+# Global variables to store model and tokenizer
+model = None
+tokenizer = None
 
-model = AutoModelForCausalLM.from_pretrained(model_path)
-tokenizer = AutoTokenizer.from_pretrained(model_path)
-print("model and tokenizer loaded")
+def load_model():
+    global model, tokenizer
+    if model is None or tokenizer is None:
+        model_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "fine_tuned_deepseek")
+        model = AutoModelForCausalLM.from_pretrained(model_path)
+        tokenizer = AutoTokenizer.from_pretrained(model_path)
+        print("Model and tokenizer loaded")
+
+def unload_model():
+    global model, tokenizer
+    del model
+    del tokenizer
+    model = None
+    tokenizer = None
+    gc.collect()
+    if torch.cuda.is_available():
+        torch.cuda.empty_cache()
+    print("Model and tokenizer unloaded")
+
 def generate_sql(instruction, context):
+    global model, tokenizer
+    
+    # Load model if not already loaded
+    load_model()
+    
     prompt = f"### Instruction: {instruction}\n\n### Context: {context}"
     inputs = tokenizer(prompt, return_tensors="pt", padding=True)
     with torch.no_grad():
@@ -19,17 +42,10 @@ def generate_sql(instruction, context):
             temperature=0.2,
             max_time=120
         )
-    return tokenizer.decode(outputs[0], skip_special_tokens=True)
-
-instruction = """Write a SQL query to find all endangered species with a population of less than 1000 individuals."""
-context="""CREATE TABLE endangered_species (
-    species_id INT PRIMARY KEY,
-    scientific_name VARCHAR(100),
-    common_name VARCHAR(100),
-    conservation_status VARCHAR(50),
-    habitat_type VARCHAR(100),
-    population_count INT,
-    year_assessed INT,
-    primary_threats VARCHAR(200)"""
-
-print(generate_sql(instruction,context))
+    result = tokenizer.decode(outputs[0], skip_special_tokens=True)
+    
+    # Optionally unload model after generation
+    # Uncomment if you want to free memory after each generation
+    # unload_model()
+    
+    return result

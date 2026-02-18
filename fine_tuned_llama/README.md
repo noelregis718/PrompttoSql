@@ -17,9 +17,9 @@ library_name: peft
 
 
 
-- **Developed by:** [More Information Needed]
+- **Developed by:** Noel Regis
 - **Funded by [optional]:** [More Information Needed]
-- **Shared by [optional]:** [More Information Needed]
+- **Shared by [optional]:** Noel Regis
 - **Model type:** [More Information Needed]
 - **Language(s) (NLP):** [More Information Needed]
 - **License:** [More Information Needed]
@@ -192,7 +192,7 @@ Carbon emissions can be estimated using the [Machine Learning Impact calculator]
 
 ## Model Card Authors [optional]
 
-[More Information Needed]
+- Noel Regis (noelregis718@gmail.com)
 
 ## Model Card Contact
 

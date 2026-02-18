@@ -40,4 +40,8 @@ The goal of this project is to fine-tune pre-trained LLaMA and DeepSeek models o
 - **Transformers** library by Hugging Face
 - **Gradio** (Used for visualization)
 
-\
+## Author
+
+- **Name**: Noel Regis
+- **Email**: noelregis718@gmail.com
+- **GitHub**: [noelregis718](https://github.com/noelregis718)
